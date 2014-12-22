@@ -7,7 +7,7 @@ var log = function (data) {
     console.log(data);
 }
 
-exports.chatService = Montage.specialize({
+exports.ChatService = Montage.specialize({
     constructor: {
         value: function () {
             this.init();
@@ -19,6 +19,7 @@ exports.chatService = Montage.specialize({
             log('RECV: ' + data);
         }
     },
+
     rawOutput: {
         value: function (data) {
             log('SENT: ' + data);
@@ -27,27 +28,34 @@ exports.chatService = Montage.specialize({
     BOSH_SERVICE: {
         value: 'http://JW:7070/http-bind/'
     },
+
     connection: {
         value: null
     },
-    userJID: {
+
+    userJid: {
         value: null
     },
+
     roomID: {
         value: null
     },
+
     roomSuffix: {
         value: "room.jw"
     },
-    msgFrom: {
+
+    messageFrom: {
         value: null
     },
-    msgTo: {
+    messageTo: {
         value: null
     },
-    msgContent: {
+
+    messageContent: {
         value: null
     },
+
     init: {
         value: function () {
             var self = this;
@@ -61,22 +69,24 @@ exports.chatService = Montage.specialize({
                 var type = msgXML.getAttribute('type');
                 var elems = msgXML.getElementsByTagName('body');
                 var text = Strophe.getText(elems[0]);
-                self.msgFrom = from;
-                self.msgTo = to;
-                self.msgContent = text;
+                self.messageFrom = from;
+                self.messageTo = to;
+                self.messageContent = text;
                 log("========From:" + from + ":    " + text);
                 return true;
             }, null, "message");
             connection.muc.init(connection);
         }
     },
+
     connectionStatus: {
         value: null
     },
+
     connect: {
         value: function () {
             var self = this;
-            connection.connect(this.userJID, "welcome", function (status) {
+            connection.connect(this.userJid, "welcome", function (status) {
                 self.connectionStatus = status;
                 if (status == Strophe.Status.CONNECTING) {
                     log('Strophe is connecting.');
@@ -92,6 +102,7 @@ exports.chatService = Montage.specialize({
             });
         }
     },
+
     joinRoom: {
         value: function (room, nick, rosterfn) {
             var self = this;
@@ -101,11 +112,13 @@ exports.chatService = Montage.specialize({
             }, rosterfn, "welcome", null);
         }
     },
+
     leaveRoom:{
        value:function(room,nick){
            connection.muc.leave(room,nick,null,null);
        }
     },
+
     createRoom: {
         value: function () {
             var self = this;
@@ -116,8 +129,8 @@ exports.chatService = Montage.specialize({
 
             var roominfo = self.roomID + "@" + self.roomSuffix;
             var d = $pres({
-                "from": self.userJID,
-                "to": roominfo + "/" + self.userJID.replace('@', '_')
+                "from": self.userJid,
+                "to": roominfo + "/" + self.userJid.replace('@', '_')
             })
                 .c("x", {"xmlns": "http://jabber.org/protocol/muc"});
 
@@ -127,9 +140,9 @@ exports.chatService = Montage.specialize({
                 log("Create " + roominfo + " successfully.");
             }, function (err) {
                 log("Create chat room failed. Err:" + err);
-                //self.leaveRoom(roominfo,self.userJID);
+                //self.leaveRoom(roominfo,self.userJid);
                 setTimeout(function () {
-                    self.joinRoom(roominfo, self.userJID.replace('@', '_'), function (data, opt) {
+                    self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
                         log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
@@ -138,6 +151,7 @@ exports.chatService = Montage.specialize({
             log("After create room, return :" + roomrel);
         }
     },
+
     queryOccupants:{
        value:function(){
            var self=this;
@@ -153,6 +167,7 @@ exports.chatService = Montage.specialize({
                log("You didn't connect to server yet.");
        }
     },
+
     sendMessage: {
         value: function (msg) {
             var self = this;
