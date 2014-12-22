@@ -48,6 +48,7 @@ exports.ChatService = Montage.specialize({
     messageFrom: {
         value: null
     },
+
     messageTo: {
         value: null
     },
