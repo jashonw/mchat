@@ -2,7 +2,9 @@
  * Created by Jashon on 2014/12/19.
  */
 var Montage = require("montage").Montage;
+var X2JS = require("core/xml2json.min").X2JS;
 require("core/strophe");
+
 var log = function (data) {
     console.log(data);
 }
@@ -26,7 +28,7 @@ exports.ChatService = Montage.specialize({
         }
     },
     BOSH_SERVICE: {
-        value: 'http://JW:7070/http-bind/'
+        value: 'http://115.28.165.154:7070/http-bind/'
     },
 
     connection: {
@@ -57,6 +59,10 @@ exports.ChatService = Montage.specialize({
         value: null
     },
 
+    userList: {
+        value: {}
+    },
+
     init: {
         value: function () {
             var self = this;
@@ -76,6 +82,19 @@ exports.ChatService = Montage.specialize({
                 log("========From:" + from + ":    " + text);
                 return true;
             }, null, "message");
+            connection.addHandler(function (preXML) {
+                var prejson = new X2JS();
+                var jsonstr = prejson.xml2json(preXML);
+                if (jsonstr._type != "error") {
+                    if (jsonstr._type == "unavailable") {
+                        delete self.userList[Strophe.getBareJidFromJid(jsonstr._from)];
+                    }
+                    else {
+                        self.userList[Strophe.getBareJidFromJid(jsonstr._from)] = Strophe.getBareJidFromJid(jsonstr._from);
+                    }
+                }
+                return true;
+            }, null, "presence");
             connection.muc.init(connection);
         }
     },
@@ -85,7 +104,7 @@ exports.ChatService = Montage.specialize({
     },
 
     connect: {
-        value: function () {
+        value: function (onconnect) {
             var self = this;
             connection.connect(this.userJid, "welcome", function (status) {
                 self.connectionStatus = status;
@@ -100,6 +119,8 @@ exports.ChatService = Montage.specialize({
                 } else if (status == Strophe.Status.CONNECTED) {
                     log('Strophe is connected.');
                 }
+                if (onconnect)
+                    onconnect(status);
             });
         }
     },
@@ -108,20 +129,22 @@ exports.ChatService = Montage.specialize({
         value: function (room, nick, rosterfn) {
             var self = this;
             connection.muc.join(room, nick, function (msg, opt) {
+                debugger
             }, function (data, pre) {
+                debugger
                 log("Joined " + room + " successfully.");
             }, rosterfn, "welcome", null);
         }
     },
 
-    leaveRoom:{
-       value:function(room,nick){
-           connection.muc.leave(room,nick,null,null);
-       }
+    leaveRoom: {
+        value: function (room, nick) {
+            connection.muc.leave(room, nick, null, null);
+        }
     },
 
     createRoom: {
-        value: function () {
+        value: function (successfn, failfn) {
             var self = this;
             if (self.connectionStatus != Strophe.Status.CONNECTED) {
                 self.connect();
@@ -139,34 +162,36 @@ exports.ChatService = Montage.specialize({
 
             var roomrel = connection.muc.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
+                successfn();
             }, function (err) {
                 log("Create chat room failed. Err:" + err);
                 //self.leaveRoom(roominfo,self.userJid);
                 setTimeout(function () {
                     self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
+                        debugger
                         log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
-
+                failfn();
             });
             log("After create room, return :" + roomrel);
         }
     },
 
-    queryOccupants:{
-       value:function(){
-           var self=this;
-           if (connection){
-               var roominfo=self.roomID+"@"+self.roomSuffix;
-                connection.muc.queryOccupants(roominfo,function(data){
+    queryOccupants: {
+        value: function () {
+            var self = this;
+            if (connection) {
+                var roominfo = self.roomID + "@" + self.roomSuffix;
+                connection.muc.queryOccupants(roominfo, function (data) {
                     debugger
-                },function(err){
+                }, function (err) {
                     debugger
                 });
-           }
-           else
-               log("You didn't connect to server yet.");
-       }
+            }
+            else
+                log("You didn't connect to server yet.");
+        }
     },
 
     sendMessage: {
