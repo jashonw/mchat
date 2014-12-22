@@ -163,7 +163,8 @@ exports.ChatService = Montage.specialize({
 
             var roomrel = connection.muc.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
-                successfn();
+                if (successfn)
+                    successfn();
             }, function (err) {
                 log("Create chat room failed. Err:" + err);
                 //self.leaveRoom(roominfo,self.userJid);
@@ -173,7 +174,8 @@ exports.ChatService = Montage.specialize({
                         log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
-                failfn();
+                if (failfn)
+                    failfn();
             });
             log("After create room, return :" + roomrel);
         }
