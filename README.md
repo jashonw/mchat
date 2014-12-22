@@ -1,5 +1,5 @@
 
-Chat Component with XMPP server
+Chatroom Component with XMPP server
 ============
 
 Will build a montagejs chatroom compoennt with a XMPP server.
