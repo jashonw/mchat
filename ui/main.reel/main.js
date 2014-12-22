@@ -21,7 +21,7 @@ exports.Main = Component.specialize(/** @lends Main# */ {
                 var chatcli=new ChatService();
                 chatcli.userJid="kkk";
                 chatcli.roomID="TestRoom";
-                chatcli.connect(function(){
+                chatcli.connect(function(stat){
 
                 });
                 setTimeout(function(){
