@@ -138,6 +138,21 @@ exports.chatService = Montage.specialize({
             log("After create room, return :" + roomrel);
         }
     },
+    queryOccupants:{
+       value:function(){
+           var self=this;
+           if (connection){
+               var roominfo=self.roomID+"@"+self.roomSuffix;
+                connection.muc.queryOccupants(roominfo,function(data){
+                    debugger
+                },function(err){
+                    debugger
+                });
+           }
+           else
+               log("You didn't connect to server yet.");
+       }
+    },
     sendMessage: {
         value: function (msg) {
             var self = this;

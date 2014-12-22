@@ -18,16 +18,17 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         value:function(isFirsttime){
             if (isFirsttime)
             {
-                var chatcli=new chatService();
-                chatcli.userJID="kkk";
-                chatcli.roomID="TestRoom";
-                chatcli.connect();
-                setTimeout(function(){
-                    chatcli.createRoom();
-                    setInterval(function(){
-                        chatcli.sendMessage("KDJFKDJFKDFJDKFDJFD");
-                    },10000);
-                },5000);
+                //var chatcli=new chatService();
+                //chatcli.userJID="kkk";
+                //chatcli.roomID="TestRoom";
+                //chatcli.connect();
+                //setTimeout(function(){
+                //    chatcli.createRoom();
+                //    setInterval(function(){
+                //        chatcli.sendMessage("KDJFKDJFKDFJDKFDJFD");
+                //        //chatcli.queryOccupants();
+                //    },10000);
+                //},5000);
             }
         }
     }
