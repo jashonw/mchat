@@ -18,6 +18,7 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         value:function(isFirsttime){
             if (isFirsttime)
             {
+                /*
                 var chatcli=new ChatService();
                 chatcli.userJid="kkk";
                 chatcli.roomID="TestRoom";
@@ -35,8 +36,8 @@ exports.Main = Component.specialize(/** @lends Main# */ {
                         //chatcli.queryOccupants();
                     },10000);
                 },5000);
+                */
             }
         }
     }
-
 });

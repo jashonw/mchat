@@ -1,0 +1,66 @@
+body, html
+{
+    height: 100%;
+}
+.ChatRoom
+{
+    display:-moz-box;
+    display:-webkit-box;
+    display:box;
+    -moz-box-orient:vertical;
+    -webkit-box-orient:vertical;
+    box-orient:vertical;
+    height:100%;
+}
+
+.ChatRoom .header
+{
+
+}
+
+.ChatRoom .main-content
+{
+    -moz-box-flex:1;
+    -webkit-box-flex:1;
+    box-flex:1;
+
+    display:-moz-box;
+    display:-webkit-box;
+    display:box;
+}
+.ChatRoom .UserList
+{
+    -webkit-animation:RoomListShowKeyFrame 1s;
+    width:150px;
+}
+
+.ChatRoom .contentArea
+{
+    -moz-box-flex:1;
+    -webkit-box-flex:1;
+    box-flex:1;
+
+    display:-moz-box;
+    display:-webkit-box;
+    display:box;
+
+    -moz-box-orient:vertical;
+    -webkit-box-orient:vertical;
+    box-orient:vertical;
+
+    border-left: 2px solid;
+    border-right: 2px solid;
+    border-color:#efefef;
+
+    background-color:#eeeecc;
+}
+
+.ChatRoom .MessageList
+{
+    padding-top: 6px;
+}
+
+.ChatRoom .PostMessage
+{
+    display:none;
+}

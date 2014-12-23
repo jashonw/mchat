@@ -1,0 +1,10 @@
+.UserListItem {
+    padding:10px;
+    min-width:150px;
+}
+
+.UserListItem  .user-name
+{
+    display:inline-block;
+    padding-left: 10px;
+}
