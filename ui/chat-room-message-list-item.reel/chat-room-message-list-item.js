@@ -13,5 +13,6 @@ exports.ChatRoomMessageListItem = Component.specialize(/** @lends ChatRoomMessag
             this.super();
         }
     },
+
     value:{value:null}
 });

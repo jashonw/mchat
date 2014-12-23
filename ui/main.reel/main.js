@@ -15,26 +15,8 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         }
     },
     enterDocument: {
-        value: function (isFirsttime) {
-            if (isFirsttime) {
-                //var chatcli=new ChatService();
-                //chatcli.userJid="kkk";
-                //chatcli.roomID="TestRoom";
-                //chatcli.connect(function(stat){
-                //
-                //});
-                //setTimeout(function(){
-                //    chatcli.createRoom(function(){
-                //
-                //    },function(err){
-                //        debugger
-                //    });
-                //    setInterval(function(){
-                //        chatcli.sendMessage("KDJFKDJFKDFJDKFDJFD");
-                //        //chatcli.queryOccupants();
-                //    },10000);
-                //},5000);
-            }
+        value: function(isFirsTtime) {
+
         }
     }
 });
