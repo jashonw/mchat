@@ -83,14 +83,15 @@ exports.ChatService = Montage.specialize({
                 return true;
             }, null, "message");
             connection.addHandler(function (preXML) {
+                debugger
                 var prejson = new X2JS();
                 var jsonstr = prejson.xml2json(preXML);
                 if (jsonstr._type != "error") {
                     if (jsonstr._type == "unavailable") {
-                        delete self.userList[Strophe.getBareJidFromJid(jsonstr._from)];
+                        delete self.userList[Strophe.getResourceFromJid(jsonstr._from)];
                     }
                     else {
-                        self.userList[Strophe.getBareJidFromJid(jsonstr._from)] = Strophe.getBareJidFromJid(jsonstr._from);
+                        self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
                     }
                 }
                 return true;
@@ -162,7 +163,8 @@ exports.ChatService = Montage.specialize({
 
             var roomrel = connection.muc.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
-                successfn();
+                if (successfn)
+                    successfn();
             }, function (err) {
                 log("Create chat room failed. Err:" + err);
                 //self.leaveRoom(roominfo,self.userJid);
@@ -172,7 +174,8 @@ exports.ChatService = Montage.specialize({
                         log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
-                failfn();
+                if (failfn)
+                    failfn();
             });
             log("After create room, return :" + roomrel);
         }
