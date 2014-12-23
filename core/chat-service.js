@@ -114,7 +114,7 @@ exports.ChatService = Montage.specialize({
                 else if (self.joinRoomFlag && jsonstr._type == "error") {
                     self.joinRoomFlag = false;
                     debugger
-                    var errmsg = "Same user name in the room already.";
+                    var errmsg = "Same user name in the room already. Please try again later.";
                     self.joinRoomFailFunction(errmsg);
                 }
                 return true;
@@ -156,7 +156,7 @@ exports.ChatService = Montage.specialize({
                 debugger
             }, function (data, pre) {
                 debugger
-                log("Joined " + room + " successfully.");
+                //log("Joined " + room + " successfully.");
             }, rosterfn, "welcome", null);
         }
     },
@@ -197,7 +197,7 @@ exports.ChatService = Montage.specialize({
                 setTimeout(function () {
                     self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
                         debugger
-                        log("Join " + roominfo + " room successfully.");
+                        //log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
             });
