@@ -187,8 +187,10 @@ exports.ChatService = Montage.specialize({
             }, function (data, pre) {
                 self.addOrRemoveUser(data);
                 debugger
-                if (self.joinRoomSuccessFunction)
+                if (self.joinRoomSuccessFunction) {
                     self.joinRoomSuccessFunction();
+                    self.joinRoomSuccessFunction = null;
+                }
                 //log("Joined " + room + " successfully.");
             }, rosterfn, "welcome", null);
         }
