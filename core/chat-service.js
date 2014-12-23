@@ -109,7 +109,7 @@ exports.ChatService = Montage.specialize({
                 }
                 else if (self.joinRoomFlag && jsonstr._type == "error") {
                     self.joinRoomFlag = false;
-                    var errmsg = "Same user name in the room already. Please try again later.";
+                    var errmsg = "Same user name in the room already. Please change your name or try again later.";
                     if (self.joinRoomFailFunction) {
                         self.joinRoomFailFunction(errmsg);
                         self.joinRoomFailFunction = null;
