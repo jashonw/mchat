@@ -1,0 +1,22 @@
+.PostMessage {
+    display:-moz-box;
+    display:-webkit-box;
+    display:box;
+    -moz-box-orient:horizontal;
+    -webkit-box-orient:horizontal;
+    box-orient:horizontal;
+    height:100%;
+    margin:10px;
+}
+.PostMessage  div:nth-child(1)
+{
+    vertical-align:middle;
+    -moz-box-flex:1;
+    -webkit-box-flex:1;
+    box-flex:1;
+    padding-right:10px;
+}
+.PostMessage  div .digit-TextArea
+{
+    width:100%;
+}

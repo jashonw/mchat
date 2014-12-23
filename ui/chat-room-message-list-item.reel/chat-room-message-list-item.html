@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="chat-room-message-list-item.css">
+    <script type="text/montage-serialization">
+    {
+        "owner": {
+            "properties": {
+                "element": {"#": "owner"}
+            }
+        },
+		"message": {
+			"prototype": "montage/ui/text.reel",
+			"properties": {
+				"element": { "#": "message" }
+			},
+			"bindings": {
+				"value": { "<-": "@owner.value.message" }
+			}
+		},
+		"userName": {
+			"prototype": "montage/ui/text.reel",
+			"properties": {
+				"element": {"#": "userName"}
+			},
+			"bindings": {
+				"value": { "<-": "@owner.value.user_name" }
+			}
+		},
+		"postTime": {
+			"prototype": "montage/ui/text.reel",
+			"properties": {
+				"element": {"#": "postTime"}
+			},
+			"bindings": {
+				"value": { "<-": "@owner.value.post_time" }
+			}
+		}
+    }
+    </script>
+</head>
+<body>
+<div data-montage-id="owner" class="ChatListItem">
+    <div  data-montage-id="userName" class="user-name"></div>
+    <div  data-montage-id="postTime" class="post-time"></div>
+    <div data-montage-id="message" class="message"></div>
+</div>
+</body>
+</html>

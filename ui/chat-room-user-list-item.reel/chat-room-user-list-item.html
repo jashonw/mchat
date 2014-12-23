@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="chat-room-user-list-item.css">
+    <script type="text/montage-serialization">
+    {
+        "owner": {
+            "properties": {
+                "element": {"#": "owner"}
+            }
+        },
+
+		"userName": {
+			"prototype": "montage/ui/text.reel",
+			"properties": {
+				"element": {"#": "userName"}
+			},
+			"bindings": {
+				"value": { "<-": "@owner.user_name" }
+			}
+		}
+    }
+    </script>
+</head>
+<body>
+    <div data-montage-id="owner" class="UserListItem">
+        <div  data-montage-id="userName" class="user-name"></div>
+    </div>
+</body>
+</html>

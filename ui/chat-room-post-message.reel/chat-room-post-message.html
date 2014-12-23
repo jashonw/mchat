@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="chat-room-post-message.css">
+    <script type="text/montage-serialization">
+    {
+        "owner": {
+            "properties": {
+                "element": {"#": "owner"}
+            }
+        },
+		"message": {
+				"prototype": "/digit/ui/text-area.reel",
+                "properties": {
+                    "element": {"#": "message"}
+                }
+        },
+		"btnSend": {
+				"prototype": "/digit/ui/button.reel",
+                "properties": {
+                    "element": {"#": "btnSend"}
+                },
+                "listeners": [
+                    {
+                        "type": "action",
+                        "listener": {"@": "owner"}
+                    }
+                 ]
+        }
+    }
+    </script>
+</head>
+<body>
+<div data-montage-id="owner" class="ChatRoomPostMessage">
+    <div>
+        <div data-montage-id="message"></div>
+    </div>
+
+    <div data-montage-id="btnSend">Send</div>
+</div>
+</body>
+</html>

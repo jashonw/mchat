@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="chat-room.css">
+    <script type="text/montage-serialization">
+    {
+        "owner": {
+            "properties": {
+                "element": {"#": "owner"}
+            }
+        },
+        "header": {
+            "prototype": "ui/chat-room-header.reel",
+            "properties": {
+                "element": {"#": "header"}
+            },
+            "bindings": {
+                "data": { "<-": "@owner.chatRoomTitle" }
+            }
+        },
+        "messageList": {
+            "prototype": "ui/chat-room-message-list.reel",
+            "properties": {
+                "element": {"#": "messageList"}
+            },
+            "bindings": {
+                "data": { "<-": "@owner.messageListData" }
+            }
+        },
+        "postMessage": {
+            "prototype": "ui/chat-room-post-message.reel",
+            "properties": {
+                "element": {"#": "postMessage"}
+            }
+        },
+        "userList": {
+            "prototype": "ui/chat-room-user-list.reel",
+            "properties": {
+                "element": {"#": "userList"}
+            },
+            "bindings":{
+                "contentController":{"<-": "@owner.chatService"}
+            }
+        }
+    }
+    </script>
+</head>
+<body>
+    <div data-montage-id="owner" class="ChatRoom" data-montage-skin="light">
+        <div data-montage-id="header"></div>
+        <div class="main-content">
+            <div data-montage-id="userList" class="UserList"></div>
+            <div class="contentArea">
+                <div data-montage-id="postMessage"></div>
+                <div data-montage-id="messageList" class="MessageList"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
