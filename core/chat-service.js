@@ -71,6 +71,14 @@ exports.ChatService = Montage.specialize({
         value: null
     },
 
+    joinRoomSuccessFunction: {
+        value: null
+    },
+
+    xml2json: {
+        value: null
+    },
+
     init: {
         value: function () {
             var self = this;
@@ -92,30 +100,20 @@ exports.ChatService = Montage.specialize({
             }, null, "message");
             connection.addHandler(function (preXML) {
                 debugger
-                var prejson = new X2JS();
-                var jsonstr = prejson.xml2json(preXML);
+                if (!self.xml2json) {
+                    self.xml2json = new X2JS();
+                }
+                var jsonstr = self.xml2json.xml2json(preXML);
                 if (jsonstr._type != "error") {
                     if (self.joinRoomFlag) self.joinRoomFlag = false;
-                    if (jsonstr._type == "unavailable") {
-                        //delete self.userList[Strophe.getResourceFromJid(jsonstr._from)];
-                        for (var i = 0, len = self.userList.length; i < len; i++) {
-                            if (self.userList[i] == Strophe.getResourceFromJid(jsonstr._from)) {
-                                self.userList.splice(i, 1);
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        //self.userList.splice(-1, 0, Strophe.getResourceFromJid(jsonstr._from));
-                        self.userList.push(Strophe.getResourceFromJid(jsonstr._from));
-                        //self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
-                    }
+                    self.addOrRemoveUser(preXML);
                 }
                 else if (self.joinRoomFlag && jsonstr._type == "error") {
                     self.joinRoomFlag = false;
                     debugger
                     var errmsg = "Same user name in the room already. Please try again later.";
                     self.joinRoomFailFunction(errmsg);
+                    self.joinRoomFailFunction = null;
                 }
                 return true;
             }, null, "presence");
@@ -149,13 +147,48 @@ exports.ChatService = Montage.specialize({
         }
     },
 
+    addOrRemoveUser: {
+        value: function (preXML) {
+            var self = this;
+            if (!self.xml2json) {
+                self.xml2json = new X2JS();
+            }
+            var jsonstr = self.xml2json.xml2json(preXML);
+            var username = Strophe.getResourceFromJid(jsonstr._from);
+            if (jsonstr._type == "unavailable") {
+                for (var i = 0, len = self.userList.length; i < len; i++) {
+                    if (self.userList[i] == username) {
+                        self.userList.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            else {
+                //self.userList.push(username);
+                var found = false;
+                for (var i = 0, len = self.userList.length; i < len; i++) {
+                    if (self.userList[i] == username) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    self.userList.push(username);
+                }
+            }
+        }
+    },
+
     joinRoom: {
         value: function (room, nick, rosterfn) {
             var self = this;
             connection.muc.join(room, nick, function (msg, opt) {
                 debugger
             }, function (data, pre) {
+                self.addOrRemoveUser(data);
                 debugger
+                if (self.joinRoomSuccessFunction)
+                    self.joinRoomSuccessFunction();
                 //log("Joined " + room + " successfully.");
             }, rosterfn, "welcome", null);
         }
@@ -183,11 +216,14 @@ exports.ChatService = Montage.specialize({
 
             connection.send(d.tree());
             self.joinRoomFlag = true;
+            self.joinRoomSuccessFunction = successfn;
             self.joinRoomFailFunction = failfn;
             var roomrel = connection.muc.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
-                if (successfn)
+                if (successfn) {
+                    self.joinRoomSuccessFunction = null;
                     successfn();
+                }
                 self.joinRoomFlag = false;
             }, function (err) {
                 log("Create chat room failed. Err:" + err);
