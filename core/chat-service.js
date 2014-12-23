@@ -112,8 +112,10 @@ exports.ChatService = Montage.specialize({
                     self.joinRoomFlag = false;
                     debugger
                     var errmsg = "Same user name in the room already. Please try again later.";
-                    self.joinRoomFailFunction(errmsg);
-                    self.joinRoomFailFunction = null;
+                    if (self.joinRoomFailFunction) {
+                        self.joinRoomFailFunction(errmsg);
+                        self.joinRoomFailFunction = null;
+                    }
                 }
                 return true;
             }, null, "presence");
