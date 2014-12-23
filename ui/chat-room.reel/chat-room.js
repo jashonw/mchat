@@ -22,6 +22,7 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
             if (!this.chatService) {
                 this.chatService = new ChatService();
                 this.chatService.userJid = this.chatUserName;
+                this.chatService.roomID = this.chatRoomName;
                 this.addPathChangeListener("this.chatService.messageContent", this, "handleMessageIncome");
             }
         }
@@ -29,7 +30,7 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
 
     handleMessageIncome: {
         value: function () {
-            if(this.chatService && this.chatService.messageContent){
+            if (this.chatService && this.chatService.messageContent) {
                 var currentDate = new Date();
                 var dateTime = currentDate.getDate() + '/'
                     + (currentDate.getMonth() + 1) + '/'
@@ -93,7 +94,7 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                         //self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     });
                 }
-                else{
+                else {
                     self.chatRoomTitle = 'Unknown status: ' + stat;
                 }
             });
