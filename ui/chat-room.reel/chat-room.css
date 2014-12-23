@@ -67,8 +67,6 @@ body, html
 
     flex:1;
     -webkit-flex: 1;
-
-    overflow-y: auto;
 }
 
 .ChatRoom-mainContent-contentArea-postMessage

@@ -88,8 +88,10 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                 } else if (stat == Strophe.Status.CONNECTED) {
                     self.chatRoomTitle = 'Connecting to room ' + self.chatRoomName;
                     self.chatService.createRoom(function () {
+
                         self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     }, function (errorMsg) {
+                        
                         self.chatRoomTitle = 'Failed to connect room ' + self.chatRoomName + ', message:' + errorMsg;
                         //self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     });

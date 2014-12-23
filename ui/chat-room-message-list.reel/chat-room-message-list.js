@@ -14,7 +14,9 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
 
         }
     },
+
     _data:{value:false},
+
     data:{
         set:function(v){
             this._data = v;
@@ -23,10 +25,23 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
             return this._data;
         }
     },
+
     templateDidLoad:{
         value:function(){
             var rangeController = this.templateObjects.rangeController;
             rangeController.content = this.data;
+            this.addRangeAtPathChangeListener( "this.data", this, "handleDataChange" );
+        }
+    },
+
+    handleDataChange:{
+        value:function(){
+            var self = this;
+            //Need set scroll to bottom after ui change, but how should we know UI change is done?
+            setTimeout(function(){
+                self.templateObjects.list.element.scrollTop = 100000;
+            },500);
+
         }
     }
 });
