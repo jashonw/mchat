@@ -60,7 +60,7 @@ exports.ChatService = Montage.specialize({
     },
 
     userList: {
-        value: {}
+        value: []
     },
 
     init: {
@@ -88,10 +88,18 @@ exports.ChatService = Montage.specialize({
                 var jsonstr = prejson.xml2json(preXML);
                 if (jsonstr._type != "error") {
                     if (jsonstr._type == "unavailable") {
-                        delete self.userList[Strophe.getResourceFromJid(jsonstr._from)];
+                        //delete self.userList[Strophe.getResourceFromJid(jsonstr._from)];
+                        for(var i,len=self.userList.length;i<len;i++)
+                        {
+                            if (self.userList[i]==Strophe.getResourceFromJid(jsonstr._from)) {
+                                self.userList.splice(i, 1);
+                                break;
+                            }
+                        }
                     }
                     else {
-                        self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
+                        self.userList.splice(-1,0, Strophe.getResourceFromJid(jsonstr._from));
+                        //self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
                     }
                 }
                 return true;
