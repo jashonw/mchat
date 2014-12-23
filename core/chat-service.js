@@ -99,7 +99,6 @@ exports.ChatService = Montage.specialize({
                 return true;
             }, null, "message");
             connection.addHandler(function (preXML) {
-                debugger
                 if (!self.xml2json) {
                     self.xml2json = new X2JS();
                 }
@@ -110,7 +109,6 @@ exports.ChatService = Montage.specialize({
                 }
                 else if (self.joinRoomFlag && jsonstr._type == "error") {
                     self.joinRoomFlag = false;
-                    debugger
                     var errmsg = "Same user name in the room already. Please try again later.";
                     if (self.joinRoomFailFunction) {
                         self.joinRoomFailFunction(errmsg);
@@ -185,10 +183,8 @@ exports.ChatService = Montage.specialize({
         value: function (room, nick, rosterfn) {
             var self = this;
             connection.muc.join(room, nick, function (msg, opt) {
-                debugger
             }, function (data, pre) {
                 self.addOrRemoveUser(data);
-                debugger
                 if (self.joinRoomSuccessFunction) {
                     self.joinRoomSuccessFunction();
                     self.joinRoomSuccessFunction = null;
@@ -231,12 +227,10 @@ exports.ChatService = Montage.specialize({
                 self.joinRoomFlag = false;
             }, function (err) {
                 log("Create chat room failed. Err:" + err);
-                debugger
                 self.joinRoomFlag = true;
                 //self.leaveRoom(roominfo,self.userJid);
                 setTimeout(function () {
                     self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
-                        debugger
                         //log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
@@ -251,9 +245,7 @@ exports.ChatService = Montage.specialize({
             if (connection) {
                 var roominfo = self.roomID + "@" + self.roomSuffix;
                 connection.muc.queryOccupants(roominfo, function (data) {
-                    debugger
                 }, function (err) {
-                    debugger
                 });
             }
             else
