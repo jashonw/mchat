@@ -63,6 +63,14 @@ exports.ChatService = Montage.specialize({
         value: []
     },
 
+    joinRoomFlag: {
+        value: false
+    },
+
+    joinRoomFailFunction: {
+        value: null
+    },
+
     init: {
         value: function () {
             var self = this;
@@ -97,7 +105,8 @@ exports.ChatService = Montage.specialize({
                         }
                     }
                     else {
-                        self.userList.splice(-1, 0, Strophe.getResourceFromJid(jsonstr._from));
+                        //self.userList.splice(-1, 0, Strophe.getResourceFromJid(jsonstr._from));
+                        self.userList.push(Strophe.getResourceFromJid(jsonstr._from));
                         //self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
                     }
                 }
@@ -163,8 +172,7 @@ exports.ChatService = Montage.specialize({
             var d = $pres({
                 "from": self.userJid,
                 "to": roominfo + "/" + self.userJid.replace('@', '_')
-            })
-                .c("x", {"xmlns": "http://jabber.org/protocol/muc"});
+            }).c("x", {"xmlns": "http://jabber.org/protocol/muc"});
 
             connection.send(d.tree());
 
@@ -173,16 +181,16 @@ exports.ChatService = Montage.specialize({
                 if (successfn)
                     successfn();
             }, function (err) {
+                self.joinRoomFailFunction = failfn;
                 log("Create chat room failed. Err:" + err);
                 //self.leaveRoom(roominfo,self.userJid);
                 setTimeout(function () {
+                    self.joinRoomFlag = true;
                     self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
                         debugger
                         log("Join " + roominfo + " room successfully.");
                     });
                 }, 1000);
-                if (failfn)
-                    failfn();
             });
             log("After create room, return :" + roomrel);
         }
