@@ -1,4 +1,4 @@
-.ChatListItem {
+.ChatRoomMessageListItem {
     background-color:#fbfbfb;
     padding:3px;
     min-height:10px;
@@ -6,7 +6,7 @@
     border-bottom: 1px solid;
     border-bottom-color: #eeeeee;
 }
-.ChatListItem .user-name
+.ChatRoomMessageListItem-userName
 {
     color:gray;
     position: absolute;
@@ -16,14 +16,14 @@
     text-align: center;
     padding:3px;
 }
-.ChatListItem  .post-time
+.ChatRoomMessageListItem-userName-postTime
 {
     color:#bbbbbb;
     bottom: 5px;
     right:10px;
     position: absolute;
 }
-.ChatListItem .message
+.ChatRoomMessageListItem-message
 {
     display:inline-block;
     background-color:#ffffff;

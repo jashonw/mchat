@@ -1,8 +1,8 @@
-.Header {
+.ChatRoomHeader {
     background-color:#333333;
 }
 
-.Header header{
+.ChatRoomHeader-header{
     color:#ffffff;
     text-align: center;
     margin: 0px;

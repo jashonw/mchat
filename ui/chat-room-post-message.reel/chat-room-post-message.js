@@ -1,10 +1,10 @@
 /**
- * @module ui/post-message.reel
+ * @module ui/chat-room-post-message.reel
  */
 var Component = require("montage/ui/component").Component;
 
 /**
- * @class PostMessage
+ * @class ChatRoomPostMessage
  * @extends Component
  */
 exports.ChatRoomPostMessage = Component.specialize(/** @lends ChatRoomPostMessage# */ {
@@ -17,7 +17,9 @@ exports.ChatRoomPostMessage = Component.specialize(/** @lends ChatRoomPostMessag
         value: function() {
             var ms = this.templateObjects.message.value;
             this.parentComponent.chatService.sendMessage(ms);
-            console.log("Fallback action handler invoked as there is no specific handler for this button");
+            this.templateObjects.message.element.value = '';
+            this.templateObjects.message.element.focus();
+            //console.log("Fallback action handler invoked as there is no specific handler for this button");
         }
     }
 });

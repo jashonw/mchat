@@ -13,15 +13,19 @@
         "title":{
             "prototype": "montage/ui/text.reel",
 			"properties": {
-				"element": {"#": "title"}
-			}
+				"element": {"#": "title"},
+				"value":"Chat Demo"
+			},
+			"bindings":{
+                "value":{"<-": "@owner.data"}
+            }
         }
     }
     </script>
 </head>
 <body>
-<div data-montage-id="owner" class="Header">
-    <header data-montage-id="title">Chat Demo</header>
+<div data-montage-id="owner" class="ChatRoomHeader">
+    <header data-montage-id="title" class="ChatRoomHeader-header"></header>
 </div>
 </body>
 </html>

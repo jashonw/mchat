@@ -38,7 +38,6 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                     + currentDate.getMinutes() + ':'
                     + currentDate.getSeconds();
                 var messageParts = this.chatService.messageFrom.split('/');
-                debugger
                 var messageAuthor = messageParts.length > 1 ? messageParts[1] : this.chatService.messageFrom;
                 this.messageListData.push(
                     {
@@ -77,7 +76,6 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
         value: function (firstTime) {
             var self = this;
             this.chatService.connect(function (stat) {
-                debugger
                 if (stat == Strophe.Status.CONNECTING) {
                     self.chatRoomTitle = 'Connecting to server';
                 } else if (stat == Strophe.Status.CONNFAIL) {
@@ -89,12 +87,14 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                 } else if (stat == Strophe.Status.CONNECTED) {
                     self.chatRoomTitle = 'Connecting to room ' + self.chatRoomName;
                     self.chatService.createRoom(function () {
-                        debugger
                         self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
-                    }, function () {
-                        debugger
-                        self.chatRoomTitle = 'Failed to connect room ' + self.chatRoomName;
+                    }, function (errorMsg) {
+                        self.chatRoomTitle = 'Failed to connect room ' + self.chatRoomName + ', message:' + errorMsg;
+                        //self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     });
+                }
+                else{
+                    self.chatRoomTitle = 'Unknown status: ' + stat;
                 }
             });
         }

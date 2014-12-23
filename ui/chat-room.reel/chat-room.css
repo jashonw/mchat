@@ -2,65 +2,83 @@ body, html
 {
     height: 100%;
 }
+
+*{
+    box-sizing: border-box;
+}
+
 .ChatRoom
 {
-    display:-moz-box;
-    display:-webkit-box;
-    display:box;
-    -moz-box-orient:vertical;
-    -webkit-box-orient:vertical;
-    box-orient:vertical;
-    height:100%;
+    display:-webkit-flex;
+    display:flex;
+
+    flex-direction: column;
+    -webkit-flex-direction: column;
+
+    height: 100%;
 }
 
-.ChatRoom .header
+.ChatRoom-mainContent
 {
+    flex:1;
+    -webkit-flex: 1;
 
+    display:-webkit-flex;
+    display:flex;
+
+    flex-direction: row;
+    -webkit-flex-direction: row;
 }
 
-.ChatRoom .main-content
-{
-    -moz-box-flex:1;
-    -webkit-box-flex:1;
-    box-flex:1;
-
-    display:-moz-box;
-    display:-webkit-box;
-    display:box;
-}
-.ChatRoom .UserList
+.ChatRoom-mainContent-userList
 {
     -webkit-animation:RoomListShowKeyFrame 1s;
-    width:150px;
+    flex:0 0 200px;
+    -webkit-flex: 0 0 200px;
 }
 
-.ChatRoom .contentArea
+.ChatRoom-mainContent-contentArea
 {
-    -moz-box-flex:1;
-    -webkit-box-flex:1;
-    box-flex:1;
-
-    display:-moz-box;
-    display:-webkit-box;
-    display:box;
-
-    -moz-box-orient:vertical;
-    -webkit-box-orient:vertical;
-    box-orient:vertical;
+    flex:1;
+    -webkit-flex: 1;
 
     border-left: 2px solid;
     border-right: 2px solid;
     border-color:#efefef;
 
+    flex-direction: column;
+    -webkit-flex-direction: column;
+
+    display:-webkit-flex;
+    display:flex;
+
     background-color:#eeeecc;
+
 }
 
-.ChatRoom .MessageList
+.ChatRoom-mainContent-contentArea-messageList
 {
     padding-top: 6px;
+    display:-webkit-flex;
+    display:flex;
+
+    flex-direction: column;
+    -webkit-flex-direction: column;
+
+    flex:1;
+    -webkit-flex: 1;
+
+    overflow-y: auto;
 }
 
-.ChatRoom .PostMessage
+.ChatRoom-mainContent-contentArea-postMessage
 {
-    display:none;
+    display:-webkit-flex;
+    display:flex;
+
+    flex-direction: row;
+    -webkit-flex-direction: row;
+
+    flex:0 0 50px;
+    -webkit-flex:0 0 50px;
 }
