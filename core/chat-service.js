@@ -89,16 +89,15 @@ exports.ChatService = Montage.specialize({
                 if (jsonstr._type != "error") {
                     if (jsonstr._type == "unavailable") {
                         //delete self.userList[Strophe.getResourceFromJid(jsonstr._from)];
-                        for(var i=0,len=self.userList.length;i<len;i++)
-                        {
-                            if (self.userList[i]==Strophe.getResourceFromJid(jsonstr._from)) {
+                        for (var i = 0, len = self.userList.length; i < len; i++) {
+                            if (self.userList[i] == Strophe.getResourceFromJid(jsonstr._from)) {
                                 self.userList.splice(i, 1);
                                 break;
                             }
                         }
                     }
                     else {
-                        self.userList.splice(-1,0, Strophe.getResourceFromJid(jsonstr._from));
+                        self.userList.splice(-1, 0, Strophe.getResourceFromJid(jsonstr._from));
                         //self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
                     }
                 }
