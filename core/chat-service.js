@@ -95,6 +95,7 @@ exports.ChatService = Montage.specialize({
                 var prejson = new X2JS();
                 var jsonstr = prejson.xml2json(preXML);
                 if (jsonstr._type != "error") {
+                    if (self.joinRoomFlag) self.joinRoomFlag = false;
                     if (jsonstr._type == "unavailable") {
                         //delete self.userList[Strophe.getResourceFromJid(jsonstr._from)];
                         for (var i = 0, len = self.userList.length; i < len; i++) {
@@ -109,6 +110,12 @@ exports.ChatService = Montage.specialize({
                         self.userList.push(Strophe.getResourceFromJid(jsonstr._from));
                         //self.userList[Strophe.getResourceFromJid(jsonstr._from)] = Strophe.getResourceFromJid(jsonstr._from);
                     }
+                }
+                else if (self.joinRoomFlag && jsonstr._type == "error") {
+                    self.joinRoomFlag = false;
+                    debugger
+                    var errmsg = "Same user name in the room already.";
+                    self.joinRoomFailFunction(errmsg);
                 }
                 return true;
             }, null, "presence");
@@ -175,17 +182,19 @@ exports.ChatService = Montage.specialize({
             }).c("x", {"xmlns": "http://jabber.org/protocol/muc"});
 
             connection.send(d.tree());
-
+            self.joinRoomFlag = true;
+            self.joinRoomFailFunction = failfn;
             var roomrel = connection.muc.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
                 if (successfn)
                     successfn();
+                self.joinRoomFlag = false;
             }, function (err) {
-                self.joinRoomFailFunction = failfn;
                 log("Create chat room failed. Err:" + err);
+                debugger
+                self.joinRoomFlag = true;
                 //self.leaveRoom(roominfo,self.userJid);
                 setTimeout(function () {
-                    self.joinRoomFlag = true;
                     self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
                         debugger
                         log("Join " + roominfo + " room successfully.");
