@@ -13,5 +13,6 @@
 .ChatRoomPostMessage-message
 {
     flex: 1;
+    -webkit-flex:1;
     height: 40px;
 }
