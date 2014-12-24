@@ -161,6 +161,14 @@ exports.ChatService = Montage.specialize({
                     }
                 }
             }
+            else if (jsonstr._type == "error") {
+                if (self.joinRoomFailFunction) {
+                    var errmsg = "Same user name in the room already. Please change your name or try again later.";
+                    self.joinRoomFailFunction(errmsg);
+                    self.joinRoomFailFunction = null;
+                }
+                self.joinRoomSuccessFunction = null;
+            }
             else {
                 //self.userList.push(username);
                 var found = false;
@@ -183,6 +191,7 @@ exports.ChatService = Montage.specialize({
             connection.muc.join(room, nick, function (msg, opt) {
 
             }, function (data, pre) {
+                debugger
                 self.addOrRemoveUser(data);
 
                 if (self.joinRoomSuccessFunction)
