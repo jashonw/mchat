@@ -189,14 +189,14 @@ exports.ChatService = Montage.specialize({
         value: function (room, nick, rosterfn) {
             var self = this;
             connection.muc.join(room, nick, function (msg, opt) {
-
+                return true;
             }, function (data, pre) {
-                debugger
                 self.addOrRemoveUser(data);
 
                 if (self.joinRoomSuccessFunction)
                     self.joinRoomSuccessFunction();
                 //log("Joined " + room + " successfully.");
+                return true;
             }, rosterfn, "welcome", null);
         }
     },
@@ -239,8 +239,8 @@ exports.ChatService = Montage.specialize({
                 //self.leaveRoom(roominfo,self.userJid);
                 setTimeout(function () {
                     self.joinRoom(roominfo, self.userJid.replace('@', '_'), function (data, opt) {
-
                         //log("Join " + roominfo + " room successfully.");
+                        return true;
                     });
                 }, 1000);
             });
@@ -254,9 +254,7 @@ exports.ChatService = Montage.specialize({
             if (connection) {
                 var roominfo = self.roomID + "@" + self.roomSuffix;
                 connection.muc.queryOccupants(roominfo, function (data) {
-                    debugger
                 }, function (err) {
-                    debugger
                 });
             }
             else
