@@ -28,8 +28,6 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
 
     templateDidLoad:{
         value:function(){
-            var rangeController = this.templateObjects.rangeController;
-            rangeController.content = this.data;
             this.addRangeAtPathChangeListener( "this.data", this, "handleDataChange" );
         }
     },
@@ -41,7 +39,7 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
             //Or I think we should do this in the draw cycle too. Have a attribute to set the scrollTop and really set it to UI when draw.
             setTimeout(function(){
                 self.templateObjects.list.element.scrollTop = 100000;
-            },500);
+            },300);
 
         }
     }

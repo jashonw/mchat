@@ -14,5 +14,13 @@ exports.ChatRoomMessageListItem = Component.specialize(/** @lends ChatRoomMessag
         }
     },
 
-    value:{value:null}
+    value: {
+        value: null
+    },
+
+    draw: {
+        value: function () {
+            this.templateObjects.message.element.innerHTML = this.value.message ? this.value.message : "";
+        }
+    }
 });

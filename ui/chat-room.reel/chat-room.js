@@ -52,9 +52,9 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
         value: function() {
             if (this.chatService && this.chatService.messageContent) {
                 var currentDate = new Date();
-                var dateTime = currentDate.getDate() + '/'
+                var dateTime = currentDate.getFullYear() + '/'
                     + (currentDate.getMonth() + 1) + '/'
-                    + currentDate.getFullYear() + ' '
+                    + currentDate.getDate() + ' '
                     + currentDate.getHours() + ':'
                     + currentDate.getMinutes() + ':'
                     + currentDate.getSeconds();

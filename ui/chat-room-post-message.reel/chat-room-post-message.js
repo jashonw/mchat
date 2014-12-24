@@ -30,10 +30,11 @@ exports.ChatRoomPostMessage = Component.specialize(/** @lends ChatRoomPostMessag
         }
     },
 
-    didDraw:{
-        value:function(firstTime){
-            var message = this.templateObjects.message.element;
-            message.addEventListener("keydown", this);
+    prepareForActivationEvents:{
+        value:function(){
+            var self=this;
+            var message = self.templateObjects.message.element;
+            message.addEventListener("keydown",self);
         }
     },
 

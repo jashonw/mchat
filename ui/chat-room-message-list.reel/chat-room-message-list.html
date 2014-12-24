@@ -13,8 +13,12 @@
 		"rangeController":{
                  "prototype": "montage/core/range-controller",
                  "properties": {
-			     }
+			     },
+			     "bindings": {
+				"content": { "<-": "@owner.data" }
+			}
           },
+
 		"list": {
 			"prototype": "montage/ui/repetition.reel",
 			"properties": {
@@ -32,6 +36,7 @@
 			}
 		}
     }
+
     </script>
 </head>
 <body>
