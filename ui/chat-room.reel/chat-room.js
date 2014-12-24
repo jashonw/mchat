@@ -17,6 +17,26 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
         }
     },
 
+    chatServiceUrl: {
+        value: null
+    },
+
+    chatService: {
+        value: null
+    },
+
+    chatRoomName: {
+        value: null
+    },
+
+    chatUserName: {
+        value: null
+    },
+
+    chatRoomTitle: {
+        value: null
+    },
+
     _init: {
         value: function() {
             if (!this.chatService) {
@@ -51,28 +71,6 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
         }
     },
 
-    chatService: {
-        value: null
-    },
-
-    chatRoomName: {
-        value: null
-    },
-
-    chatUserName: {
-        value: null
-    },
-
-    chatRoomTitle: {
-        value: null
-    },
-
-    templateDidLoad: {
-        value: function(firstTime) {
-            this._init();
-        }
-    },
-
     enterDocument: {
         value: function(firstTime) {
             var self = this;
@@ -101,5 +99,14 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                 }
             });
         }
+    },
+
+    templateDidLoad: {
+        value: function(firstTime) {
+            this._init();
+        }
     }
+
+
+
 });

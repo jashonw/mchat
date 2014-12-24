@@ -38,6 +38,7 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
         value:function(){
             var self = this;
             //Need set scroll to bottom after ui change, but how should we know UI change is done?
+            //Or I think we should do this in the draw cycle too. Have a attribute to set the scrollTop and really set it to UI when draw.
             setTimeout(function(){
                 self.templateObjects.list.element.scrollTop = 100000;
             },500);
