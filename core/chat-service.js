@@ -8,11 +8,16 @@ require("core/strophe");
 var log = function (data) {
     console.log(data);
 }
-
 exports.ChatService = Montage.specialize({
     constructor: {
         value: function () {
-            this.init();
+            var self = this;
+            self.init();
+            window.onbeforeunload = function () {
+                if (self.connection) {
+                    self.connection.disconnect();
+                }
+            }
         }
     },
 
@@ -82,10 +87,10 @@ exports.ChatService = Montage.specialize({
     init: {
         value: function () {
             var self = this;
-            connection = new Strophe.Connection(this.BOSH_SERVICE);
-            connection.rawInput = this.rawInput;
-            connection.rawOutput = this.rawOutput;
-            connection.addHandler(function (msgXML) {
+            self.connection = new Strophe.Connection(this.BOSH_SERVICE);
+            self.connection.rawInput = this.rawInput;
+            self.connection.rawOutput = this.rawOutput;
+            self.connection.addHandler(function (msgXML) {
                 var to = msgXML.getAttribute('to');
                 var from = msgXML.getAttribute('from');
                 var fromBareJid = Strophe.getBareJidFromJid(from);
@@ -98,7 +103,7 @@ exports.ChatService = Montage.specialize({
                 log("========From:" + from + ":    " + text);
                 return true;
             }, null, "message");
-            connection.addHandler(function (preXML) {
+            self.connection.addHandler(function (preXML) {
                 if (!self.xml2json) {
                     self.xml2json = new X2JS();
                 }
@@ -115,7 +120,7 @@ exports.ChatService = Montage.specialize({
                 }
                 return true;
             }, null, "presence");
-            connection.muc.init(connection);
+            self.connection.muc.init(self.connection);
         }
     },
 
@@ -126,7 +131,7 @@ exports.ChatService = Montage.specialize({
     connect: {
         value: function (onconnect) {
             var self = this;
-            connection.connect(this.userJid, "welcome", function (status) {
+            self.connection.connect(this.userJid, "welcome", function (status) {
                 self.connectionStatus = status;
                 if (status == Strophe.Status.CONNECTING) {
                     log('Strophe is connecting.');
@@ -188,7 +193,7 @@ exports.ChatService = Montage.specialize({
     joinRoom: {
         value: function (room, nick, rosterfn) {
             var self = this;
-            connection.muc.join(room, nick, function (msg, opt) {
+            self.connection.muc.join(room, nick, function (msg, opt) {
                 return true;
             }, function (data, pre) {
                 self.addOrRemoveUser(data);
@@ -203,7 +208,7 @@ exports.ChatService = Montage.specialize({
 
     leaveRoom: {
         value: function (room, nick) {
-            connection.muc.leave(room, nick, null, null);
+            self.connection.muc.leave(room, nick, null, null);
         }
     },
 
@@ -221,11 +226,11 @@ exports.ChatService = Montage.specialize({
                 "to": roominfo + "/" + self.userJid.replace('@', '_')
             }).c("x", {"xmlns": "http://jabber.org/protocol/muc"});
 
-            connection.send(d.tree());
+            self.connection.send(d.tree());
             self.joinRoomFlag = true;
             self.joinRoomSuccessFunction = successfn;
             self.joinRoomFailFunction = failfn;
-            var roomrel = connection.muc.createInstantRoom(roominfo, function () {
+            var roomrel = self.connection.muc.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
                 if (successfn) {
                     self.joinRoomSuccessFunction = null;
@@ -251,9 +256,9 @@ exports.ChatService = Montage.specialize({
     queryOccupants: {
         value: function () {
             var self = this;
-            if (connection) {
+            if (self.connection) {
                 var roominfo = self.roomID + "@" + self.roomSuffix;
-                connection.muc.queryOccupants(roominfo, function (data) {
+                self.connection.muc.queryOccupants(roominfo, function (data) {
                 }, function (err) {
                 });
             }
@@ -265,8 +270,8 @@ exports.ChatService = Montage.specialize({
     sendMessage: {
         value: function (msg) {
             var self = this;
-            if (connection)
-                connection.muc.groupchat(self.roomID + "@" + self.roomSuffix, msg, "<p>" + msg + "</p>");
+            if (self.connection)
+                self.connection.muc.groupchat(self.roomID + "@" + self.roomSuffix, msg, "<p>" + msg + "</p>");
             else
                 log("You didn't connect to server yet.");
         }
