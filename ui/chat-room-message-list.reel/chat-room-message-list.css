@@ -1,6 +1,8 @@
 .ChatRoomMessageList {
 }
 
-.ChatRoomMessageList-list{
+.ChatRoomMessageList-list {
     overflow-y: auto;
+    flex: 1;
+    -webkit-flex: 1;
 }

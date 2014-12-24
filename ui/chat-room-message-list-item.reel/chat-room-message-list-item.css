@@ -1,34 +1,26 @@
 .ChatRoomMessageListItem {
-    background-color:#fbfbfb;
-    padding:3px;
-    min-height:10px;
-    position:relative;
-    border-bottom: 1px solid;
-    border-bottom-color: #eeeeee;
+    background-color: #fbfbfb;
+    padding: 3px;
+    position: relative;
+    border-bottom: 1px solid #eeeeee;
 }
-.ChatRoomMessageListItem-userName
-{
-    color:gray;
-    position: absolute;
-    font-weight:bold;
-    color:black;
-    width: 80px;
+
+.ChatRoomMessageListItem-userName {
+    font-weight: bold;
+    color: black;
     text-align: center;
-    padding:3px;
+    display: inline-block;
 }
-.ChatRoomMessageListItem-userName-postTime
-{
-    color:#bbbbbb;
-    bottom: 5px;
-    right:10px;
-    position: absolute;
+
+.ChatRoomMessageListItem-userName-postTime {
+    color: #bbbbbb;
+    display: inline-block;
+    float: right;
 }
-.ChatRoomMessageListItem-message
-{
-    display:inline-block;
-    background-color:#ffffff;
-    padding:3px;
-    border-radius:8px;
-    margin-left:120px;
-    font-size:16px;
+
+.ChatRoomMessageListItem-message {
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 3px;
+    font-size: 16px;
 }
