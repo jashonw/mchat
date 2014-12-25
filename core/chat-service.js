@@ -14,8 +14,9 @@ exports.ChatService = Montage.specialize({
             var self = this;
             self.init();
             window.onbeforeunload = function () {
-                if (self.connection) {
-                    self.connection.disconnect();
+                var lconn=self.connection;
+                if (lconn) {
+                    lconn.disconnect();
                 }
             }
         }
@@ -56,7 +57,7 @@ exports.ChatService = Montage.specialize({
         value: null
     },
 
-    messageTo: {
+    messageTime: {
         value: null
     },
 
@@ -96,9 +97,17 @@ exports.ChatService = Montage.specialize({
                 var fromBareJid = Strophe.getBareJidFromJid(from);
                 var type = msgXML.getAttribute('type');
                 var elems = msgXML.getElementsByTagName('body');
+                var delay = msgXML.getElementsByTagName('delay');
+                var detime = null;
+                if (delay && delay.length > 0) {
+                    detime = new Date(delay[0].getAttribute('stamp'));
+                }
+                else {
+                    detime = new Date();
+                }
                 var text = Strophe.getText(elems[0]);
                 self.messageFrom = from;
-                self.messageTo = to;
+                self.messageTime = detime;
                 self.messageContent = text;
                 log("========From:" + from + ":    " + text);
                 return true;
@@ -120,7 +129,7 @@ exports.ChatService = Montage.specialize({
                 }
                 return true;
             }, null, "presence");
-            self.connection.muc.init(self.connection);
+            self.connection.room.init(self.connection);
         }
     },
 
@@ -193,7 +202,7 @@ exports.ChatService = Montage.specialize({
     joinRoom: {
         value: function (room, nick, rosterfn) {
             var self = this;
-            self.connection.muc.join(room, nick, function (msg, opt) {
+            self.connection.room.join(room, nick, function (msg, opt) {
                 return true;
             }, function (data, pre) {
                 self.addOrRemoveUser(data);
@@ -208,7 +217,7 @@ exports.ChatService = Montage.specialize({
 
     leaveRoom: {
         value: function (room, nick) {
-            self.connection.muc.leave(room, nick, null, null);
+            self.connection.room.leave(room, nick, null, null);
         }
     },
 
@@ -230,7 +239,7 @@ exports.ChatService = Montage.specialize({
             self.joinRoomFlag = true;
             self.joinRoomSuccessFunction = successfn;
             self.joinRoomFailFunction = failfn;
-            var roomrel = self.connection.muc.createInstantRoom(roominfo, function () {
+            var roomrel = self.connection.room.createInstantRoom(roominfo, function () {
                 log("Create " + roominfo + " successfully.");
                 if (successfn) {
                     self.joinRoomSuccessFunction = null;
@@ -258,7 +267,7 @@ exports.ChatService = Montage.specialize({
             var self = this;
             if (self.connection) {
                 var roominfo = self.roomID + "@" + self.roomSuffix;
-                self.connection.muc.queryOccupants(roominfo, function (data) {
+                self.connection.room.queryOccupants(roominfo, function (data) {
                 }, function (err) {
                 });
             }
@@ -271,7 +280,7 @@ exports.ChatService = Montage.specialize({
         value: function (msg) {
             var self = this;
             if (self.connection)
-                self.connection.muc.groupchat(self.roomID + "@" + self.roomSuffix, msg, "<p>" + msg + "</p>");
+                self.connection.room.groupchat(self.roomID + "@" + self.roomSuffix, msg, "<p>" + msg + "</p>");
             else
                 log("You didn't connect to server yet.");
         }

@@ -5154,7 +5154,7 @@ var Occupant, RoomConfig, XmppRoom,
         };
     };
 
-Strophe.addConnectionPlugin('muc', {
+Strophe.addConnectionPlugin('room', {
     _connection: null,
     rooms: {},
     roomNames: [],
@@ -5166,10 +5166,10 @@ Strophe.addConnectionPlugin('muc', {
     init: function (conn) {
         this._connection = conn;
         this._muc_handler = null;
-        Strophe.addNamespace('MUC_OWNER', Strophe.NS.MUC + "#owner");
-        Strophe.addNamespace('MUC_ADMIN', Strophe.NS.MUC + "#admin");
-        Strophe.addNamespace('MUC_USER', Strophe.NS.MUC + "#user");
-        return Strophe.addNamespace('MUC_ROOMCONF', Strophe.NS.MUC + "#roomconfig");
+        Strophe.addNamespace('ROOM_OWNER', Strophe.NS.MUC + "#owner");
+        Strophe.addNamespace('ROOM_ADMIN', Strophe.NS.MUC + "#admin");
+        Strophe.addNamespace('ROOM_USER', Strophe.NS.MUC + "#user");
+        return Strophe.addNamespace('ROOM_ROOMCONF', Strophe.NS.MUC + "#roomconfig");
     },
     /*Function
      Join a multi-user chat room
@@ -5368,7 +5368,7 @@ Strophe.addConnectionPlugin('muc', {
             to: room,
             id: msgid
         }).c('x', {
-            xmlns: Strophe.NS.MUC_USER
+            xmlns: Strophe.NS.ROOM_USER
         }).c('invite', {
             to: receiver
         });
@@ -5446,7 +5446,7 @@ Strophe.addConnectionPlugin('muc', {
             to: room,
             type: "get"
         }).c("query", {
-            xmlns: Strophe.NS.MUC_OWNER
+            xmlns: Strophe.NS.ROOM_OWNER
         });
         stanza = config.tree();
         return this._connection.sendIQ(stanza, handler_cb, error_cb);
@@ -5465,7 +5465,7 @@ Strophe.addConnectionPlugin('muc', {
             to: room,
             type: "set"
         }).c("query", {
-            xmlns: Strophe.NS.MUC_OWNER
+            xmlns: Strophe.NS.ROOM_OWNER
         }).c("x", {
             xmlns: "jabber:x:data",
             type: "cancel"
@@ -5488,7 +5488,7 @@ Strophe.addConnectionPlugin('muc', {
             to: room,
             type: "set"
         }).c("query", {
-            xmlns: Strophe.NS.MUC_OWNER
+            xmlns: Strophe.NS.ROOM_OWNER
         });
         if (config instanceof Form) {
             config.type = "submit";
@@ -5519,7 +5519,7 @@ Strophe.addConnectionPlugin('muc', {
             to: room,
             type: "set"
         }).c("query", {
-            xmlns: Strophe.NS.MUC_OWNER
+            xmlns: Strophe.NS.ROOM_OWNER
         }).c("x", {
             xmlns: "jabber:x:data",
             type: "submit"
@@ -5565,7 +5565,7 @@ Strophe.addConnectionPlugin('muc', {
             to: room,
             type: "set"
         }).c("query", {
-            xmlns: Strophe.NS.MUC_ADMIN
+            xmlns: Strophe.NS.ROOM_ADMIN
         }).cnode(item.node);
         if (reason != null) {
             iq.c("reason", reason);
@@ -5972,7 +5972,7 @@ XmppRoom = (function () {
                     break;
                 case "x":
                     a = c.attributes;
-                    if (((_ref2 = a.xmlns) != null ? _ref2.textContent : void 0) === Strophe.NS.MUC_USER) {
+                    if (((_ref2 = a.xmlns) != null ? _ref2.textContent : void 0) === Strophe.NS.ROOM_USER) {
                         _ref3 = c.childNodes;
                         for (_j = 0, _len1 = _ref3.length; _j < _len1; _j++) {
                             c2 = _ref3[_j];

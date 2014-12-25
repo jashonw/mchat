@@ -51,7 +51,7 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
     handleMessageIncome: {
         value: function() {
             if (this.chatService && this.chatService.messageContent) {
-                var currentDate = new Date();
+                var currentDate = this.chatService.messageTime;
                 var dateTime = currentDate.getFullYear() + '/'
                     + (currentDate.getMonth() + 1) + '/'
                     + currentDate.getDate() + ' '
@@ -86,10 +86,8 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                 } else if (stat == Strophe.Status.CONNECTED) {
                     self.chatRoomTitle = 'Connecting to room ' + self.chatRoomName;
                     self.chatService.createRoom(function() {
-
                         self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     }, function(errorMsg) {
-
                         self.chatRoomTitle = 'Failed to connect room ' + self.chatRoomName + ', message:' + errorMsg;
                         //self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     });
