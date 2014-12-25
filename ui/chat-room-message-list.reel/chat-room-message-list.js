@@ -43,6 +43,7 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
     templateDidLoad:{
         value:function(){
             this.addRangeAtPathChangeListener( "this.data", this, "handleDataChange" );
+            this.scrollPosition = 1000000;
         }
     },
 
