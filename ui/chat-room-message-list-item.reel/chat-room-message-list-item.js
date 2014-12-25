@@ -21,6 +21,7 @@ exports.ChatRoomMessageListItem = Component.specialize(/** @lends ChatRoomMessag
     draw: {
         value: function () {
             this.templateObjects.message.element.innerHTML = this.value.message ? this.value.message : "";
+            this.templateObjects.userName.element.innerHTML = this.value.user_name ? this.value.user_name : "";
         }
     }
 });

@@ -9,7 +9,7 @@ var Component = require("montage/ui/component").Component,
  * @class ChatRoom
  * @extends Component
  */
-exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
+exports.Chat = Component.specialize(/** @lends ChatRoom# */ {
     constructor: {
         value: function ChatRoom() {
             this.super();
@@ -25,6 +25,10 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
         value: null
     },
 
+    BOSH_SERVICE: {
+        value: 'http://115.28.165.154:7070/http-bind/'
+    },
+
     chatRoomName: {
         value: null
     },
@@ -38,18 +42,19 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
     },
 
     _init: {
-        value: function() {
+        value: function () {
             if (!this.chatService) {
                 this.chatService = new ChatService();
                 this.chatService.userJid = this.chatUserName;
                 this.chatService.roomID = this.chatRoomName;
+                this.chatService.BOSH_SERVICE = this.BOSH_SERVICE;
                 this.addPathChangeListener("this.chatService.messageContent", this, "handleMessageIncome");
             }
         }
     },
 
     handleMessageIncome: {
-        value: function() {
+        value: function () {
             if (this.chatService && this.chatService.messageContent) {
                 var currentDate = this.chatService.messageTime;
                 var dateTime = currentDate.getFullYear() + '/'
@@ -72,9 +77,9 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
     },
 
     enterDocument: {
-        value: function(firstTime) {
+        value: function (firstTime) {
             var self = this;
-            this.chatService.connect(function(stat) {
+            this.chatService.connect(function (stat) {
                 if (stat == Strophe.Status.CONNECTING) {
                     self.chatRoomTitle = 'Connecting to server';
                 } else if (stat == Strophe.Status.CONNFAIL) {
@@ -85,9 +90,9 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
                     self.chatRoomTitle = 'Disconnected from server';
                 } else if (stat == Strophe.Status.CONNECTED) {
                     self.chatRoomTitle = 'Connecting to room ' + self.chatRoomName;
-                    self.chatService.createRoom(function() {
+                    self.chatService.createRoom(function () {
                         self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
-                    }, function(errorMsg) {
+                    }, function (errorMsg) {
                         self.chatRoomTitle = 'Failed to connect room ' + self.chatRoomName + ', message:' + errorMsg;
                         //self.chatRoomTitle = 'You are in the room ' + self.chatRoomName + ' now';
                     });
@@ -100,11 +105,10 @@ exports.ChatRoom = Component.specialize(/** @lends ChatRoom# */ {
     },
 
     templateDidLoad: {
-        value: function(firstTime) {
+        value: function (firstTime) {
             this._init();
         }
     }
-
 
 
 });
