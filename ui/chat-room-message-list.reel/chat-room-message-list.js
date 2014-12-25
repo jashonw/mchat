@@ -26,21 +26,35 @@ exports.ChatRoomMessageList = Component.specialize(/** @lends ChatRoomMessageLis
         }
     },
 
+    _scrollPosition:{
+        value:1000000
+    },
+
+    scrollPosition:{
+        set:function(value){
+            this._scrollPosition = value;
+            this.needsDraw = true;
+        },
+        get:function(){
+            return this._scrollPosition;
+        }
+    },
+
     templateDidLoad:{
         value:function(){
             this.addRangeAtPathChangeListener( "this.data", this, "handleDataChange" );
         }
     },
 
+    draw:{
+        value:function(){
+            this.templateObjects.list.element.scrollTop = this.scrollPosition;
+        }
+    },
+
     handleDataChange:{
         value:function(){
-            var self = this;
-            //Need set scroll to bottom after ui change, but how should we know UI change is done?
-            //Or I think we should do this in the draw cycle too. Have a attribute to set the scrollTop and really set it to UI when draw.
-            setTimeout(function(){
-                self.templateObjects.list.element.scrollTop = 100000;
-            },300);
-
+            this.scrollPosition += 100;
         }
     }
 });
